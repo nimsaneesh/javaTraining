@@ -5,11 +5,10 @@ package java_demo;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-class Employee {
+class Employee implements Comparable<Employee> {
     private String name;
     private double salary;
     private int age;
@@ -46,6 +45,17 @@ class Employee {
     }
 
     @Override
+    public int compareTo(Employee other) {
+        // Compare by salary first
+        int salaryComparison = Double.compare(this.salary, other.salary);
+        if (salaryComparison != 0) {
+            return salaryComparison;
+        }
+        // If salaries are equal, compare by age
+        return Integer.compare(this.age, other.age);
+    }
+
+    @Override
     public String toString() {
         return "Employee{" +
                 "name='" + name + '\'' +
@@ -68,9 +78,8 @@ public class EmployeeData {
             employees.add(new Employee(name, salary, age));
         }
 
-        // Sorting employees based on salary and then age
-        Collections.sort(employees, Comparator.comparingDouble(Employee::getSalary)
-                                                .thenComparingInt(Employee::getAge));
+        // Sorting employees based on salary
+        Collections.sort(employees);
 
         // Print heading for sorting by salary
         System.out.println("Sorting by Salary:");
@@ -81,12 +90,12 @@ public class EmployeeData {
             System.out.println(employee);
         }
         
+        // Sorting employees based on age
+        Collections.sort(employees);
+
         // Print heading for sorting by age
         System.out.println("\nSorting by Age:");
         System.out.println("---------------");
-
-        // Sorting employees based on age
-        Collections.sort(employees, Comparator.comparingInt(Employee::getAge));
 
         // Print the sorted list of employees by age
         for (Employee employee : employees) {
